@@ -1,6 +1,7 @@
 package com.wejias.qb_tool.analyse;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -55,7 +56,13 @@ public class ParseHtml {
 //		System.out.println("--------------------------");
 		
 		if(torrent.getContent_path().indexOf("Benedetta.2021.BluRay.1080p.x264") >= 0) {
-			System.out.println(torrent.getContent_path());
+			String path = torrent.getContent_path();
+			try {
+				String pathGBK = new String(path.getBytes("ISO-8859-1"),"UTF-8");
+				System.out.println(pathGBK);
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }
