@@ -1,122 +1,141 @@
-         warn(
-            ("\"" + hyphenatedKey + "\" is a reserved attribute and cannot be used as component prop."),
-            vm
-          );
-        }
-        defineReactive$$1(props, key, value, function () {
-          if (!isRoot && !isUpdatingChildComponent) {
-            warn(
-              "Avoid mutating a prop directly since the value will be " +
-              "overwritten whenever the parent component re-renders. " +
-              "Instead, use a data or computed property based on the prop's " +
-              "value. Prop being mutated: \"" + key + "\"",
-              vm
-            );
-          }
-        });
-      }
-      // static props are already proxied on the component's prototype
-      // during Vue.extend(). We only need to proxy props defined at
-      // instantiation here.
-      if (!(key in vm)) {
-        proxy(vm, "_props", key);
-      }
-    };
+package com.wejias.qb_tool.helper;
 
-    for (var key in propsOptions) loop( key );
-    toggleObserving(true);
-  }
+import java.util.List;
+import java.util.Map;
 
-  function initData (vm) {
-    var data = vm.$options.data;
-    data = vm._data = typeof data === 'function'
-      ? getData(data, vm)
-      : data || {};
-    if (!isPlainObject(data)) {
-      data = {};
-      warn(
-        'data functions should return an object:\n' +
-        'https://vuejs.org/v2/guide/components.html#data-Must-Be-a-Function',
-        vm
-      );
-    }
-    // proxy data on instance
-    var keys = Object.keys(data);
-    var props = vm.$options.props;
-    var methods = vm.$options.methods;
-    var i = keys.length;
-    while (i--) {
-      var key = keys[i];
-      {
-        if (methods && hasOwn(methods, key)) {
-          warn(
-            ("Method \"" + key + "\" has already been defined as a data property."),
-            vm
-          );
-        }
-      }
-      if (props && hasOwn(props, key)) {
-        warn(
-          "The data property \"" + key + "\" is already declared as a prop. " +
-          "Use prop default value instead.",
-          vm
-        );
-      } else if (!isReserved(key)) {
-        proxy(vm, "_data", key);
-      }
-    }
-    // observe data
-    observe(data, true /* asRootData */);
-  }
+import org.apache.log4j.Logger;
 
-  function getData (data, vm) {
-    // #7573 disable dep collection when invoking data getters
-    pushTarget();
-    try {
-      return data.call(vm, vm)
-    } catch (e) {
-      handleError(e, vm, "data()");
-      return {}
-    } finally {
-      popTarget();
-    }
-  }
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 
-  var computedWatcherOptions = { lazy: true };
+/**
+*
+*/
+public class JsonHelper {
+	private static Logger logger = Logger.getLogger(JsonHelper.class);
+	
+	private static final SerializerFeature[] features = new SerializerFeature[]{
+		SerializerFeature.WriteDateUseDateFormat,
+		SerializerFeature.WriteNullListAsEmpty,
+		SerializerFeature.WriteNullStringAsEmpty,
+		SerializerFeature.WriteMapNullValue,
+		SerializerFeature.DisableCircularReferenceDetect
+	};
+	
+	public static String toJsonStr(Object obj) {
+		try{
+			return JSON.toJSONString(obj,features);
+		}catch(Exception e){
+			e.printStackTrace();
+			logger.error(obj+" #toJsonStr fail #"+ e.getMessage());
+			return null;
+		}
+	}
+	
 
-  function initComputed (vm, computed) {
-    // $flow-disable-line
-    var watchers = vm._computedWatchers = Object.create(null);
-    // computed properties are just getters during SSR
-    var isSSR = isServerRendering();
+	public static <T> T toJSONObject(String jsonStr,Class<T> type){
+		try{
+			return JSON.parseObject(jsonStr,type);
+		}catch(Exception e){
+			e.printStackTrace();
+			logger.error(jsonStr +","+type+" toJSONObject fail"+e.getMessage());
+			return null;
+		}
+		
+	}
+	
+	public static JSONObject toJSONObject(String jsonStr){
+		try{
+			return JSON.parseObject(jsonStr);
+		}catch(Exception e){
+			e.printStackTrace();
+			logger.error(jsonStr +", toJSONObject fail"+e.getMessage());
+			return null;
+		}
+		
+	}
+	
+	public static  <T> List<T> toTypeList(String jsonStr,Class<T> type){
+		try{
+			return JSON.parseArray(jsonStr, type);
+		}catch(Exception e){
+			e.printStackTrace();
+			logger.error(jsonStr +","+type+" toObjectList fail"+e.getMessage());
+			return null;
+		}
+	}
+	
+	
+	public static List<Object> toObjList(String jsonStr){
+		try{
+			return JSON.parseArray(jsonStr);
+		}catch(Exception e){
+			logger.error(jsonStr +",toObjectList fail"+e.getMessage());
+			return null;
+		}
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public static Map<String,Object> strToMap(String jsonStr){
+		try{
+			Map<String,Object> jsonMap = JSON.parseObject(jsonStr,Map.class);
+			return jsonMap;
+		}catch(Exception e){
+			return null;
+		}
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public static Map<String,String> strToStrMap(String jsonStr){
+		try{
+			Map<String,String> jsonMap = JSON.parseObject(jsonStr,Map.class);
+			return jsonMap;
+		}catch(Exception e){
+			return null;
+		}
+	}
+	
+	
+	public static Map<String,Integer> strToStrAndIntMap(String jsonStr){
+		try{
+			@SuppressWarnings("unchecked")
+			Map<String,Integer> jsonMap = JSON.parseObject(jsonStr,Map.class);
+			return jsonMap;
+		}catch(Exception e){
+			return null;
+		}
+	}
+	
+	
+//	public static <T> T toObjByGson(String jsonStr,Class<T> type){
+//		try{
+//			return new Gson().fromJson(jsonStr,type);
+//		}catch(Exception e){
+//			e.printStackTrace();
+//			logger.error(jsonStr +","+type+" toJSONObject fail"+e.getMessage());
+//			return null;
+//		}
+//	}
+	
+	
+//	public static String toJsonStrByGson(Object obj) {
+//		try{
+//			return new Gson().toJson(obj);
+//		}catch(Exception e){
+//			logger.error(obj+" toJsonStr fail"+e.getMessage());
+//			return null;
+//		}
+//	}
 
-    for (var key in computed) {
-      var userDef = computed[key];
-      var getter = typeof userDef === 'function' ? userDef : userDef.get;
-      if (getter == null) {
-        warn(
-          ("Getter is missing for computed property \"" + key + "\"."),
-          vm
-        );
-      }
-
-      if (!isSSR) {
-        // create internal watcher for the computed property.
-        watchers[key] = new Watcher(
-          vm,
-          getter || noop,
-          noop,
-          computedWatcherOptions
-        );
-      }
-
-      // component-defined computed properties are already defined on the
-      // component prototype. We only need to define computed properties defined
-      // at instantiation here.
-      if (!(key in vm)) {
-        defineComputed(vm, key, userDef);
-      } else {
-        if (key in vm.$data) {
-          warn(("The computed property \"" + key + "\" is already defined in data."), vm);
-        } else if (vm.$options.props && key in vm.$options.props) {
-  
+	
+	public static void main(String... args){
+//		PvpBattleResult record = new PvpBattleResult();
+//		PvpBattleResult.PvpBattleHero hero = new PvpBattleResult.PvpBattleHero();
+//		PvpBattleResult.PvpBattleHeroBuff buff = new PvpBattleResult.PvpBattleHeroBuff();
+//		hero.setHero_buff(new PvpBattleResult.PvpBattleHeroBuff[]{buff,buff});
+//		record.setAttacker(new PvpBattleResult.PvpBattleHero[]{hero,hero});
+	}
+}
