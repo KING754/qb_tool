@@ -14,7 +14,7 @@ import org.apache.http.impl.client.HttpClients;
 
 /*
 *
-*暂时不用
+*暂时不用???
 */
 public class HttpHelper {
 //	private static Logger logger = Logger.getLogger(HttpHelper.class);
