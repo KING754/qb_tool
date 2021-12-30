@@ -122,8 +122,8 @@ public class TorrentVO {
 		this.cat = torrent.getCategory();
 		
 		System.out.println(path);
-		System.out.println("getTime_active: "+(double)torrent.getTime_active()/60.0/60.0/24.0);
-		System.out.println("getSeeding_time: "+(double)torrent.getSeeding_time()/60.0/60.0/24.0);
+		System.out.println(torrent.getTime_active());
+		System.out.println(torrent.getSeeding_time());
 	}
 
 	@Override
