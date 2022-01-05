@@ -4,9 +4,22 @@ import java.util.Date;
 import java.util.Map;
 
 public class TorrentVO {
-	private String 						path;
+	/**
+	 * 表需要的数据
+	 * name,分类,downloadSize(G,M,KB),updateloadsize(G,M,KB),上传率,开始时间,总大小,是否完成下载,完成时间,下载用时,存在天数,做种时间,做种时间比,savepath,site1上传,site2上传.....
+	 */
+	private String 						name;
+	private String 						downloadSizeStr;		//unit:(G,M,KB)
+	private String 						uploadsizeStr;			//unit:(G,M,KB)
+	private String 						uploadPrecent;			//上传率
 	private Date						addDate;
+	private String 						totalSizeStr;			//unit:(G,M,KB)
+	private String 						downAll;				//是/否
 	private Date 						finishDate;
+	private int 						downloadHours;			//下载用时,unit:hour
+	private String						existDayStr;			//formast:X天Y小时Z分钟		
+	
+	private String 						path;
 	private long 						sizeNum;
 	private long						completedSize;
 	private long 						uploadSizeNum;
@@ -15,7 +28,6 @@ public class TorrentVO {
 	private long 						activeHours;
 	private String						cat;
 
-	private String name;
 	private String uploadSize;
 	private String size;
 
@@ -111,7 +123,8 @@ public class TorrentVO {
 	}
 
 	public TorrentVO(TorrentDto torrent) {
-		this.path = torrent.getContent_path();
+		this.name = torrent.getName();
+		this.path = torrent.getSave_path();
 		this.addDate =  new Date(torrent.getAdded_on() * 1000);
 		this.finishDate = new Date(torrent.getCompletion_on() * 1000);
 		this.sizeNum = torrent.getTotal_size();
@@ -142,5 +155,10 @@ public class TorrentVO {
 				+ ",\n	cat=" + cat 
 				+ " \n]";
 	}
+	
+	/**
+	 * 表需要的数据
+	 * name,分类,downloadSize(G,M,KB),updateloadsize(G,M,KB),上传率,开始时间,总大小,是否完成下载,完成时间,下载用户,存在天数,做种时间,做种时间比,savepath,site1上传,site2上传.....
+	 */
 
 }

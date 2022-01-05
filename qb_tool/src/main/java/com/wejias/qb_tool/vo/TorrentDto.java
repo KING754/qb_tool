@@ -136,8 +136,9 @@ public class TorrentDto {
 		return save_path;
 	}
 
-	public void setSave_path(String save_path) {
-		this.save_path = save_path;
+	public void setSave_path(String save_path) throws UnsupportedEncodingException {
+		String pathGBK = new String(save_path.getBytes("ISO-8859-1"),"UTF-8");
+		this.save_path = pathGBK;
 	}
 
 	public Long getNum_seeds() {
@@ -376,8 +377,9 @@ public class TorrentDto {
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setName(String name) throws UnsupportedEncodingException {
+		String nameGBK = new String(name.getBytes("ISO-8859-1"),"UTF-8");
+		this.name = nameGBK;
 	}
 
 	public String getContent_path() {

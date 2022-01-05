@@ -62,15 +62,14 @@ public class ParseHtml {
 			logger.warn("torrent == null");
 			return;
 		}
-		String path = torrent.getContent_path();
-		//			String pathGBK = new String(path.getBytes("ISO-8859-1"),"UTF-8");
-		if(TORRENT_MAP.containsKey(path)) {
-			List<TorrentVO> torrentList = TORRENT_MAP.get(path);
+		String name = torrent.getName();
+		if(TORRENT_MAP.containsKey(name)) {
+			List<TorrentVO> torrentList = TORRENT_MAP.get(name);
 			torrentList.add(new TorrentVO(torrent));
 		}else{
 			List<TorrentVO> torrentList = new ArrayList<TorrentVO>();
 			torrentList.add(new TorrentVO(torrent));
-			TORRENT_MAP.put(path, torrentList);
+			TORRENT_MAP.put(name, torrentList);
 		}
 //			System.out.println(pathGBK);
 	}
