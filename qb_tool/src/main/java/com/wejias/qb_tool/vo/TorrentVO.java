@@ -3,162 +3,116 @@ package com.wejias.qb_tool.vo;
 import java.util.Date;
 import java.util.Map;
 
+import com.wejias.qb_tool.constant.SpaceUnit;
+import com.wejias.qb_tool.constant.TimeUnit;
+
 public class TorrentVO {
-	/**
-	 * 表需要的数据
-	 * name,分类,downloadSize(G,M,KB),updateloadsize(G,M,KB),上传率,开始时间,总大小,是否完成下载,完成时间,下载用时,存在天数,做种时间,做种时间比,savepath,site1上传,site2上传.....
-	 */
-	private String 						name;
-	private String 						downloadSizeStr;		//unit:(G,M,KB)
-	private String 						uploadsizeStr;			//unit:(G,M,KB)
-	private String 						uploadPrecent;			//上传率
-	private Date						addDate;
-	private String 						totalSizeStr;			//unit:(G,M,KB)
-	private String 						downAll;				//是/否
-	private Date 						finishDate;
-	private int 						downloadHours;			//下载用时,unit:hour
-	private String						existDayStr;			//formast:X天Y小时Z分钟		
-	
-	private String 						path;
-	private long 						sizeNum;
-	private long						completedSize;
-	private long 						uploadSizeNum;
-	private Map<String, Double> 		siteUploadSize;
-	private String 						srcSite;
-	private long 						activeHours;
-	private String						cat;
+    public String                               name;
+    public String                               cat;
+    public String                               downloadSizeStr;            // unit:(G,M,KB)
+    public String                               uploadsizeStr;              // unit:(G,M,KB)
+    public Double                               uploadPrecent;              // 上传率
+    public Date                                 addDate;
+    public String                               totalSizeStr;               // unit:(G,M,KB)
+    public String                               downAll;                    // 是/否
+    public Date                                 finishDate;
+    public String                               downloadHours;              // 下载用时,unit:hour
+    public String                               existHours;                 // 存在天数,unit:hour
+    public String                               activeHours;
+    public String                               activePrecent;              // 做种率
+    public String                               path;
 
-	private String uploadSize;
-	private String size;
+    private Map<String, Double>                 siteUploadSize;
 
-	public String getName() {
-		return name;
-	}
+    // temp
+    private long                                totalByteSize;
+    private long                                downloadByteSize;
+    private long                                uploadByteSize;
+    private String                              srcSite;
+    private long                                activeSecond;
+    
+    
+    
+    
+    /**
+     * 表需要的数据
+     * name,分类,downloadSize(G,M,KB),updateloadsize(G,M,KB),上传率,开始时间,总大小,是否完成下载,完成时间,下载用时,存在时数,做种时数,做种时间比,savepath,site1上传,site2上传.....
+     */  
+    public TorrentVO(TorrentDto torrent) {
+        this.name = torrent.getName();
+        this.cat = torrent.getCategory();
+        
+        this.downloadByteSize = torrent.getDownloaded();
+        this.downloadSizeStr = SpaceUnit.getDoubleSpaceAndUnit(this.downloadByteSize);
+        
+        this.uploadByteSize = torrent.getUploaded();
+        this.uploadsizeStr = SpaceUnit.getDoubleSpaceAndUnit(this.uploadByteSize);
+        
+        this.uploadPrecent = ((double)uploadByteSize/(double)downloadByteSize);
+        
+        this.addDate = new Date(torrent.getAdded_on() * 1000);
+        
+        this.totalByteSize = torrent.getTotal_size();
+        this.totalSizeStr = SpaceUnit.getDoubleSpaceAndUnit(totalByteSize);
+        
+        this.downAll = (torrent.getDownloaded() == torrent.getTotal_size() ? "已下完":"未下完");
+        
+        this.finishDate = new Date(torrent.getCompletion_on() * 1000);
+        
+        long downloadUseSecond = this.finishDate.getTime() - this.addDate.getTime()/1000;
+        this.downloadHours = TimeUnit.getDoubleTimeAndUnitNoDay(downloadUseSecond);
+        
+        long existSecond = System.currentTimeMillis() - this.finishDate.getTime()/1000;
+        this.existHours = TimeUnit.getDoubleTimeAndUnitNoDay(existSecond);
+        
+        
+        this.path = torrent.getSave_path();
+        
+        this.srcSite = torrent.getTracker();
+        this.activeSecond = torrent.getTime_active();
 
-	public void setName(String name) {
-		this.name = name;
-	}
+        System.out.println(path);
+        System.out.println(torrent.getTime_active());
+        System.out.println(torrent.getSeeding_time());
+    }
 
-	public Date getFinishDate() {
-		return finishDate;
-	}
+    @Override
+    public String toString() {
+        return "TorrentVO [ \n	" + "name=" + name 
+                + ",\n  cat=" + cat 
+                + ",\n	downloadByteSize="+ downloadByteSize
+                + ",\n  downloadSizeStr="+ downloadSizeStr
+                
+                + ",\n	uploadByteSize=" + uploadByteSize
+                + ",\n  uploadsizeStr=" + uploadsizeStr
+                
+                + ",\n  uploadPrecent=" + uploadPrecent
+                
+                + ",\n	addDate=" + addDate
+                
+                + ",\n	totalSizeByte=" + totalByteSize
+                + ",\n  totalSizeStr=" + totalSizeStr
+                
+                + ",\n  downAll=" + downAll
+                
+                + ",\n  finishDate=" + finishDate
+                
+                + ",\n  downloadHours=" + downloadHours
+                
+                + ",\n  existHours=" + existHours 
+                
+                + ",\n	path=" + path
+                
+                + ",\n	activeSecond=" + activeSecond
+                
+                + ",\n	siteUploadSize=" + siteUploadSize
+                + ",\n	srcSite=" + srcSite 
+                + " \n]";
+    }
 
-	public void setFinishDate(Date finishDate) {
-		this.finishDate = finishDate;
-	}
-
-	public long getSizeNum() {
-		return sizeNum;
-	}
-
-	public void setSizeNum(long sizeNum) {
-		this.sizeNum = sizeNum;
-	}
-
-	public long getUploadSizeNum() {
-		return uploadSizeNum;
-	}
-
-	public void setUploadSizeNum(long uploadSizeNum) {
-		this.uploadSizeNum = uploadSizeNum;
-	}
-
-	public String getUploadSize() {
-		return uploadSize;
-	}
-
-	public void setUploadSize(String uploadSize) {
-		this.uploadSize = uploadSize;
-	}
-
-	public String getSize() {
-		return size;
-	}
-
-	public void setSize(String size) {
-		this.size = size;
-	}
-
-	public Map<String, Double> getSiteUploadSize() {
-		return siteUploadSize;
-	}
-
-	public void setSiteUploadSize(Map<String, Double> siteUploadSize) {
-		this.siteUploadSize = siteUploadSize;
-	}
-
-	public String getSrcSite() {
-		return srcSite;
-	}
-
-	public void setSrcSite(String srcSite) {
-		this.srcSite = srcSite;
-	}
-
-	public String getPath() {
-		return path;
-	}
-
-	public void setPath(String path) {
-		this.path = path;
-	}
-
-	public long getActiveHours() {
-		return activeHours;
-	}
-
-	public void setActiveHours(long activeHours) {
-		this.activeHours = activeHours;
-	}
-	
-	
-
-
-	public String getCat() {
-		return cat;
-	}
-
-	public void setCat(String cat) {
-		this.cat = cat;
-	}
-
-	public TorrentVO(TorrentDto torrent) {
-		this.name = torrent.getName();
-		this.path = torrent.getSave_path();
-		this.addDate =  new Date(torrent.getAdded_on() * 1000);
-		this.finishDate = new Date(torrent.getCompletion_on() * 1000);
-		this.sizeNum = torrent.getTotal_size();
-		this.completedSize = torrent.getDownloaded();
-		this.uploadSizeNum = torrent.getUploaded();
-		this.srcSite = torrent.getTracker();
-		this.activeHours = torrent.getTime_active();
-		this.cat = torrent.getCategory();
-		
-		System.out.println(path);
-		System.out.println(torrent.getTime_active());
-		System.out.println(torrent.getSeeding_time());
-	}
-
-	@Override
-	public String toString() {
-		return "TorrentVO [ \n	"
-				+ "name=" + name 
-				+ ",\n	finishDate=" + finishDate
-				+ ",\n	addDate=" + addDate
-				+ ",\n	totalSize=" + ((double)sizeNum/1024.0/1024.0) 
-				+ ",\n	downloadSize=" + ((double)completedSize/1024.0/1024.0)
-				+ ",\n	uploadSize=" + ((double)uploadSizeNum/1024.0/1024.0)
-				+ ",\n	siteUploadSize=" + siteUploadSize 
-				+ ",\n	srcSite=" + srcSite 
-				+ ",\n	path=" + path
-				+ ",\n	activeHours=" + activeHours/60/60/24 
-				+ ",\n	cat=" + cat 
-				+ " \n]";
-	}
-	
-	/**
-	 * 表需要的数据
-	 * name,分类,downloadSize(G,M,KB),updateloadsize(G,M,KB),上传率,开始时间,总大小,是否完成下载,完成时间,下载用户,存在天数,做种时间,做种时间比,savepath,site1上传,site2上传.....
-	 */
+    /**
+     * 表需要的数据
+     * name,分类,downloadSize(G,M,KB),updateloadsize(G,M,KB),上传率,开始时间,总大小,是否完成下载,完成时间,下载用户,存在天数,做种时间,做种时间比,savepath,site1上传,site2上传.....
+     */
 
 }
