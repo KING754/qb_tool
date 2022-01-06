@@ -1,12 +1,12 @@
 package com.wejias.qb_tool.constant;
 
 public enum SpaceUnit {
-    Byte("B",1),
-    KB("K",1024),
-    MB("M",1024*1024),
-    GB("G",1024*1024*1024),
-    TB("T",1024*1024*1024*1024),
-    PB("P",1024*1024*1024*1024*1024);
+    Byte("B",(double)1),
+    KB("K",(double)1024),
+    MB("M",(double)1024*(double)1024),
+    GB("G",(double)1024*(double)1024*(double)1024),
+    TB("T",(double)1024*(double)1024*(double)1024*(double)1024),
+    PB("P",(double)1024*(double)1024*(double)1024*(double)1024*(double)1024);
     
     private String displayName;
     private double minBytNum;
@@ -14,6 +14,10 @@ public enum SpaceUnit {
     SpaceUnit(String displayName, double minBytNum) {
        this.displayName = displayName;
        this.minBytNum = minBytNum;
+    }
+    
+    public double getMinByteNum() {
+        return this.minBytNum;
     }
     
     public static String getDoubleSpaceAndUnit(long byteSize) {
