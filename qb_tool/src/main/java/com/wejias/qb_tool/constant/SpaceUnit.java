@@ -21,26 +21,26 @@ public enum SpaceUnit {
     }
     
     public static String getDoubleSpaceAndUnit(long byteSize) {
-        String reSpaceStr = "null";
+        String reSpaceStr = "0";
         if(byteSize <= 0) {
             return reSpaceStr;
         }
         
         if(byteSize >= PB.minBytNum) {
             double spaceDoubleNum = (double)byteSize/PB.minBytNum;
-            reSpaceStr = spaceDoubleNum+PB.displayName;
+            reSpaceStr = String.format("%.2f", spaceDoubleNum)+PB.displayName;
         }else if(byteSize >= TB.minBytNum){
             double spaceDoubleNum = (double)byteSize/TB.minBytNum;
-            reSpaceStr = spaceDoubleNum+TB.displayName;
+            reSpaceStr = String.format("%.2f", spaceDoubleNum)+TB.displayName;
         }else if(byteSize >= GB.minBytNum){
             double spaceDoubleNum = (double)byteSize/GB.minBytNum;
-            reSpaceStr = spaceDoubleNum+GB.displayName;
+            reSpaceStr = String.format("%.2f", spaceDoubleNum)+GB.displayName;
         }else if(byteSize >= MB.minBytNum){
             double spaceDoubleNum = (double)byteSize/MB.minBytNum;
-            reSpaceStr = spaceDoubleNum+MB.displayName;
+            reSpaceStr = String.format("%.2f", spaceDoubleNum)+MB.displayName;
         }else if(byteSize >= KB.minBytNum){
             double spaceDoubleNum = (double)byteSize/KB.minBytNum;
-            reSpaceStr = spaceDoubleNum+KB.displayName;
+            reSpaceStr = String.format("%.2f", spaceDoubleNum)+KB.displayName;
         }else {
             reSpaceStr = byteSize+Byte.displayName;
         }

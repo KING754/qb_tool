@@ -15,20 +15,20 @@ public enum TimeUnit {
     }
     
     public static String getDoubleTimeAndUnitNoDay(long secondNum) {
-        String reSpaceStr = "0";
+        String reHoursStr = "0";
         if(secondNum <= 0) {
-            return reSpaceStr;
+            return reHoursStr;
         }
         
         if(secondNum >= HOUR.minSecondNum) {
-            double spaceDoubleNum = (double)secondNum/HOUR.minSecondNum;
-            reSpaceStr = spaceDoubleNum+HOUR.displayUnit;
+            double timeDoubleNum = (double)secondNum/HOUR.minSecondNum;
+            reHoursStr = String.format("%.2f", timeDoubleNum)+HOUR.displayUnit;
         }else if(secondNum >= MINUTE.minSecondNum){
             double spaceDoubleNum = (double)secondNum/MINUTE.minSecondNum;
-            reSpaceStr = spaceDoubleNum+MINUTE.displayUnit;
+            reHoursStr = String.format("%.2f", spaceDoubleNum)+MINUTE.displayUnit;
         }else {
-            reSpaceStr = secondNum+SECOND.displayUnit;
+            reHoursStr = secondNum+SECOND.displayUnit;
         }
-        return reSpaceStr;
+        return reHoursStr;
     }
 }
