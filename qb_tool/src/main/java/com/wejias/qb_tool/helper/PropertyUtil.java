@@ -1,1 +1,43 @@
-d8:announce45:http://tracker.openbittorrent.com:80/announce13:announce-listll45:http://tracker.openbittorrent.com:80/announceel39:http://tracker.publicbt.com:80/announceel40:http://tracker.bittorrent.am:80/announceel30:http://tracker.prq.to/announceel34:http://tracker.prq.to/announce.phpel36:http://btfans.3322.org:8000/announceel36:http://btfans.3322.org:8080/announceel36:http://btfans.3322.org:6969/announceel41:http://torrent-downloads.to:5869/announceel34:http://tpb.tracker.prq.to/announceel41:http://inferno.demonoid.com:3390/announceel33:http://bt.btbbt.com:7272/announceel36:http://tracker.mininova.org/announceel45:http://www.torrent-downloads.to:2710/announceel42:http://denis.stalker.h3q.com:6969/announceel43:http://tracker.torrentbox.com:2710/announceel41:http://torrent-downloads.to:5869/announceel41:http://inferno.demonoid.com:3409/announceel32:http://exodus.1337x.org/announceel33:http://nemesis.1337x.org/announceel39:http://tracker.publicbt.com:80/announceel37:http://fr33dom.h33t.com:3310/announceee7:comment14:WWW.MYSILU.COM10:created by13:uTorrent/220013:creation datei1292738620e8:encoding5:UTF-84:infod5:filesld6:lengthi2348034034e4:pathl63:IMAX.Ocean.Oasis.2003.Bluray.720p.x264.AC3.DualAudio-MySilu.mkveed6:lengthi3765e4:pathl63:IMAX.Ocean.Oasis.2003.Bluray.720p.x264.AC3.DualAudio-MySilu.nfoeed6:lengthi78245748e4:pathl70:IMAX.Ocean.Oasis.2003.Bluray.720p.x264.AC3.DualAudio-MySilu.Sample.mkveee4:name70:2010.12.19.IMAX.Ocean.Oasis.2003.Bluray.720p.x264.AC3.DualAudio-MySilu12:piece lengthi4194304e6:pieces11580:Ï—û¸œ6Â@use0	6=ı∑É„nIÂaKwÕöäî“jâ´{_RaCqò`⁄*ø»€º∞ éõyoÒ⁄µ™"àˆ[dÅ¶r÷b;¨
+package com.wejias.qb_tool.helper;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
+import com.wejias.qb_tool.constant.Constant;
+
+public class PropertyUtil {
+    static{
+        loadProps(Constant.SETTING_PROPERTIES,Constant.SETTING_PROPERTY_PATH);
+        loadProps(Constant.SITE_PROPERTIES, Constant.SITE_PROPERTY_PATH);
+    }
+
+    synchronized static private void loadProps(Properties props,String propertyFilePath){
+        InputStream in = null;
+        try {
+            in = PropertyUtil.class.getClassLoader().getResourceAsStream(propertyFilePath);
+            props.load(in);
+        } catch (FileNotFoundException e) {
+        	System.out.println("config.propertiesÊñá‰ª∂Êú™ÊâæÂà∞");
+        } catch (IOException e) {
+        	System.out.println("Âá∫Áé∞IOException");
+        } finally {
+            try {
+                if(null != in) {
+                    in.close();
+                }
+            } catch (IOException e) {
+            	System.out.println("config.propertiesÊñá‰ª∂ÊµÅÂÖ≥Èó≠Âá∫Áé∞ÂºÇÂ∏∏");
+            }
+        }
+    }
+
+    public static String getPropertyStrValue(Properties prop,String key){
+        if(null == prop) {
+           throw new NullPointerException("prop is null.whit key:"+key);
+        }
+        return prop.getProperty(key);
+    }
+
+}

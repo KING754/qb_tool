@@ -23,9 +23,9 @@ public class ParseHtml {
 	private static Logger logger = LoggerFactory.getLogger(ParseHtml.class);
 	
 	public String loginAndGetMainData() throws ClientProtocolException, IOException {
-		String url = PropertyUtil.getProperty(Constant.QB_URL_KEY);
-		String username = PropertyUtil.getProperty(Constant.QB_USERNAME);
-		String password = PropertyUtil.getProperty(Constant.QB_PASSWOPRD);
+		String url = PropertyUtil.getPropertyStrValue(Constant.SETTING_PROPERTIES,Constant.QB_URL_KEY);
+		String username = PropertyUtil.getPropertyStrValue(Constant.SETTING_PROPERTIES,Constant.QB_USERNAME);
+		String password = PropertyUtil.getPropertyStrValue(Constant.SETTING_PROPERTIES,Constant.QB_PASSWOPRD);
 		
 		return new HtmlUnitHelper().loginQBWeb(url, username, password);
 	}
@@ -49,7 +49,7 @@ public class ParseHtml {
 			count += entry.getValue().size();
 			for (TorrentVO torrent : entry.getValue()) {
 				System.out.println(torrent);
-				break;
+//				break;
 			}
 			break;
 		}
@@ -71,6 +71,5 @@ public class ParseHtml {
 			torrentList.add(new TorrentVO(torrent));
 			TORRENT_MAP.put(name, torrentList);
 		}
-//			System.out.println(pathGBK);
 	}
 }
