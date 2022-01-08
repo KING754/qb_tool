@@ -3,6 +3,8 @@ package com.wejias.qb_tool.vo;
 import java.util.Date;
 import java.util.Map;
 
+import com.wejias.qb_tool.constant.Constant;
+import com.wejias.qb_tool.constant.SiteInfo;
 import com.wejias.qb_tool.constant.SpaceUnit;
 import com.wejias.qb_tool.constant.TimeUnit;
 
@@ -77,6 +79,7 @@ public class TorrentVO {
         this.path = torrent.getSave_path();
         
         this.site = torrent.getTracker();
+        String name = SiteInfo.getSiteName(site);
 
 //        System.out.println(path);
 //        System.out.println(torrent.getTime_active());
@@ -121,7 +124,7 @@ public class TorrentVO {
 //                + ",\n  path=" + path
 //                
 //                + ",\n  siteUploadSize=" + siteUploadSize
-                + ",\n  site=" + site 
+//                + ",\n  site=" + site 
                 + " \n]";
     }
 
