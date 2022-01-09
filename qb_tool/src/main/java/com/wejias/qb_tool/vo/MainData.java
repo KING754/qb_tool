@@ -10,7 +10,7 @@ public class MainData {
 	private List<Map<String, Object>> 					server_state;
 	private List<Map<String, Object>> 					tags; 							// 暂时不用,不进一步解析
 	private List<Map<String, Object>> 					trackers; 						// 暂时不用,不进一步解析
-	private List<Map<String, TorrentDto>> 					torrents;
+	private List<Map<String, TorrentDto>> 				torrents;
 
 	public int getRid() {
 		return rid;

@@ -7,6 +7,7 @@ import com.wejias.qb_tool.constant.Constant;
 import com.wejias.qb_tool.constant.SiteInfo;
 import com.wejias.qb_tool.constant.SpaceUnit;
 import com.wejias.qb_tool.constant.TimeUnit;
+import com.wejias.qb_tool.constant.TrackerInfo;
 
 public class TorrentVO {
     public String                               name;
@@ -40,7 +41,7 @@ public class TorrentVO {
      * 表需要的数据
      * name,分类,downloadSize(G,M,KB),updateloadsize(G,M,KB),上传率,开始时间,总大小,是否完成下载,完成时间,下载用时,存在时数,做种时数,做种时间比,savepath,site1上传,site2上传.....
      */  
-    public TorrentVO(TorrentDto torrent) {
+    public TorrentVO(String rid,TorrentDto torrent) {
         this.name = torrent.getName();
         this.cat = torrent.getCategory();
         
@@ -78,8 +79,14 @@ public class TorrentVO {
         
         this.path = torrent.getSave_path();
         
-        this.site = torrent.getTracker();
-        String name = SiteInfo.getSiteName(site);
+        String tracker = torrent.getTracker();
+        if(tracker == null || tracker.equals("")) {
+            tracker = TrackerInfo.getTrackerURL(rid);
+        }
+//        if(tracker == null || tracker.isEmpty()) {
+//            System.out.println(name);
+//        }
+        this.site = SiteInfo.getSiteName(tracker);
 
 //        System.out.println(path);
 //        System.out.println(torrent.getTime_active());
@@ -124,7 +131,7 @@ public class TorrentVO {
 //                + ",\n  path=" + path
 //                
 //                + ",\n  siteUploadSize=" + siteUploadSize
-//                + ",\n  site=" + site 
+                + ",\n  site=" + site 
                 + " \n]";
     }
 

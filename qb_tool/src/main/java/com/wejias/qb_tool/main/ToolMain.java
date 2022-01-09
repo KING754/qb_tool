@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import org.apache.http.client.ClientProtocolException;
 
-import com.wejias.qb_tool.analyse.ParseHtml;
+import com.wejias.qb_tool.analyse.ParseLogic;
 import com.wejias.qb_tool.constant.SiteInfo;
 import com.wejias.qb_tool.helper.PropertyUtil;
 
@@ -12,7 +12,7 @@ public class ToolMain {
     public static void main(String[] args) throws ClientProtocolException, IOException {
         ToolMain.initSiteInfo();
         
-        ParseHtml qbTool = new ParseHtml();
+        ParseLogic qbTool = new ParseLogic();
         String mainData = qbTool.loginAndGetMainData();
 		
         qbTool.dealData(mainData);
