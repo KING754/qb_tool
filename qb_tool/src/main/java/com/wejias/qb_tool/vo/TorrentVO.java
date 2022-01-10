@@ -17,7 +17,7 @@ public class TorrentVO {
     public Double                               uploadPrecent;              // 上传率
     public Date                                 addDate;
     public String                               totalSizeStr;               // unit:(G,M,KB)
-    public String                               downAll;                    // 是/否,任何一个site下载完成,就是下载完成了.
+    public boolean                              isDownAll;                    // 是/否,任何一个site下载完成,就是下载完成了.
     public Date                                 finishDate;
     public String                               downloadHours;              // 下载用时,unit:hour
     public String                               existHours;                 // 存在天数,unit:hour
@@ -25,14 +25,14 @@ public class TorrentVO {
     public Double                               activePrecent;              // 做种率
     public String                               path;
 
-    private Map<String, Double>                 siteUploadSize;
+    public Map<String, Double>                 siteUploadSize;
 
     // temp
-    private long                                totalByteSize;
-    private long                                downloadByteSize;
-    private long                                uploadByteSize;
-    private String                              site;
-    private long                                activeSecond;
+    public long                                totalByteSize;
+    public long                                downloadByteSize;
+    public long                                uploadByteSize;
+    public String                              site;
+    public long                                activeSecond;
     
     
     
@@ -60,7 +60,7 @@ public class TorrentVO {
         this.totalByteSize = torrent.getTotal_size();
         this.totalSizeStr = SpaceUnit.getDoubleSpaceAndUnit(totalByteSize);
         
-        this.downAll = (torrent.getDownloaded() >= torrent.getTotal_size() ? "已下完":"未下完");
+        this.isDownAll = torrent.getDownloaded() >= torrent.getTotal_size();
         
         this.finishDate = new Date(torrent.getCompletion_on() * 1000);
         
