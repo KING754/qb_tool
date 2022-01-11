@@ -78,9 +78,6 @@ public class ParseLogic {
 	private List<TorrentVO> dealSiteUpload() {
 	    List<TorrentVO> needRecordVoList = new ArrayList<TorrentVO>();
 	    for (Entry<String, List<TorrentVO>> entry : TORRENT_MAP.entrySet()) {
-	        if(entry.getKey().equals("American.Refugee.2021.1080p.WEBRip.DD5.1.x264-NOGRP")) {
-	            System.out.println("d");
-	        }
             List<TorrentVO> val = entry.getValue();
             TorrentVO srcTorrentVO = null;
             TorrentVO maxDownload = null;
