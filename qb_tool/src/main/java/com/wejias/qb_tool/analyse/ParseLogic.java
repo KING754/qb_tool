@@ -55,6 +55,7 @@ public class ParseLogic {
 			count += entry.getValue().size();
 		}
 		System.out.println("做种数:"+count);
+		this.dealSiteUpload();
 	}
 	
 	private void dealTorrent(String torrentId,TorrentDto torrent) {
@@ -74,6 +75,25 @@ public class ParseLogic {
 	}
 	
 	private void dealSiteUpload() {
-	    
+	    for (Entry<String, List<TorrentVO>> entry : TORRENT_MAP.entrySet()) {
+            String key = entry.getKey();
+            List<TorrentVO> val = entry.getValue();
+            TorrentVO srcTorrentVO = null;
+            for (TorrentVO torrentVO : val) {
+                if(torrentVO.downloadByteSize > 0 && torrentVO.isDownAll) {
+                    srcTorrentVO = torrentVO;
+                    break;
+                }
+            }
+            if(srcTorrentVO == null) {
+                throw new NullPointerException("srcTorrentVO is null");
+            }
+            for (TorrentVO torrentVO : val) {
+                if(torrentVO.site.equals(srcTorrentVO.site)) {
+                    continue;
+                }
+                srcTorrentVO.downloadByteSize+=torrentVO.downloadByteSize;
+            }
+        }
 	}
 }
