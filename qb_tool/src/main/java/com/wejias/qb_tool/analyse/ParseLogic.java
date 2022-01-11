@@ -55,7 +55,8 @@ public class ParseLogic {
 			count += entry.getValue().size();
 		}
 		System.out.println("做种数:"+count);
-		this.dealSiteUpload();
+		List<TorrentVO> torrentVoList = this.dealSiteUpload();
+		System.out.println(torrentVoList.size());
 	}
 	
 	private void dealTorrent(String torrentId,TorrentDto torrent) {
@@ -74,26 +75,42 @@ public class ParseLogic {
 		}
 	}
 	
-	private void dealSiteUpload() {
+	private List<TorrentVO> dealSiteUpload() {
+	    List<TorrentVO> needRecordVoList = new ArrayList<TorrentVO>();
 	    for (Entry<String, List<TorrentVO>> entry : TORRENT_MAP.entrySet()) {
-            String key = entry.getKey();
+	        if(entry.getKey().equals("American.Refugee.2021.1080p.WEBRip.DD5.1.x264-NOGRP")) {
+	            System.out.println("d");
+	        }
             List<TorrentVO> val = entry.getValue();
             TorrentVO srcTorrentVO = null;
+            TorrentVO maxDownload = null;
             for (TorrentVO torrentVO : val) {
                 if(torrentVO.downloadByteSize > 0 && torrentVO.isDownAll) {
                     srcTorrentVO = torrentVO;
                     break;
                 }
+                if(maxDownload == null || torrentVO.downloadByteSize > maxDownload.downloadByteSize) {
+                    maxDownload = torrentVO;
+                }
+            }
+            if(srcTorrentVO == null && maxDownload != null) {
+                srcTorrentVO = maxDownload;
             }
             if(srcTorrentVO == null) {
-                throw new NullPointerException("srcTorrentVO is null");
+                throw new NullPointerException(entry.getKey()+" srcTorrentVO is null");
             }
+            srcTorrentVO.siteUploadSize = new HashMap<String, Long>();
+            srcTorrentVO.siteUploadSize.put(srcTorrentVO.site, srcTorrentVO.downloadByteSize);
             for (TorrentVO torrentVO : val) {
                 if(torrentVO.site.equals(srcTorrentVO.site)) {
                     continue;
                 }
-                srcTorrentVO.downloadByteSize+=torrentVO.downloadByteSize;
+                srcTorrentVO.downloadByteSize += torrentVO.downloadByteSize;
+                srcTorrentVO.activeSecond += torrentVO.activeSecond;
+                srcTorrentVO.siteUploadSize.put(torrentVO.site, torrentVO.downloadByteSize);
             }
+            needRecordVoList.add(srcTorrentVO);
         }
+	    return needRecordVoList;
 	}
 }

@@ -25,7 +25,7 @@ public class TorrentVO {
     public Double                               activePrecent;              // 做种率
     public String                               path;
 
-    public Map<String, Double>                 siteUploadSize;
+    public Map<String, Long>                   siteUploadSize;
 
     // temp
     public long                                totalByteSize;
@@ -46,19 +46,19 @@ public class TorrentVO {
         this.cat = torrent.getCategory();
         
         this.downloadByteSize = torrent.getDownloaded();
-        this.downloadSizeStr = SpaceUnit.getDoubleSpaceAndUnit(this.downloadByteSize);
+//        this.downloadSizeStr = SpaceUnit.getDoubleSpaceAndUnit(this.downloadByteSize);
         
         this.uploadByteSize = torrent.getUploaded();
-        this.uploadsizeStr = SpaceUnit.getDoubleSpaceAndUnit(this.uploadByteSize);
+//        this.uploadsizeStr = SpaceUnit.getDoubleSpaceAndUnit(this.uploadByteSize);
         
-        this.uploadPrecent = ((double)uploadByteSize/(double)downloadByteSize);
-        String valueTemp = String.format("%.2f", this.uploadPrecent);
-        this.uploadPrecent = Double.valueOf(valueTemp);
+//        this.uploadPrecent = ((double)uploadByteSize/(double)downloadByteSize);
+//        String valueTemp = String.format("%.2f", this.uploadPrecent);
+//        this.uploadPrecent = Double.valueOf(valueTemp);
         
         this.addDate = new Date(torrent.getAdded_on() * 1000);
         
         this.totalByteSize = torrent.getTotal_size();
-        this.totalSizeStr = SpaceUnit.getDoubleSpaceAndUnit(totalByteSize);
+//        this.totalSizeStr = SpaceUnit.getDoubleSpaceAndUnit(totalByteSize);
         
         this.isDownAll = torrent.getDownloaded() >= torrent.getTotal_size();
         
@@ -71,11 +71,11 @@ public class TorrentVO {
         this.existHours = TimeUnit.getDoubleTimeAndUnitNoDay(existSecond);
         
         this.activeSecond = torrent.getTime_active();
-        this.activeHours =  TimeUnit.getDoubleTimeAndUnitNoDay(activeSecond);
+//        this.activeHours =  TimeUnit.getDoubleTimeAndUnitNoDay(activeSecond);
         
-        this.activePrecent = ((double)activeSecond/(double)existSecond);
-        valueTemp = String.format("%.2f", this.activePrecent);
-        this.activePrecent = Double.valueOf(valueTemp);
+//        this.activePrecent = ((double)activeSecond/(double)existSecond);
+//        valueTemp = String.format("%.2f", this.activePrecent);
+//        this.activePrecent = Double.valueOf(valueTemp);
         
         this.path = torrent.getSave_path();
         
