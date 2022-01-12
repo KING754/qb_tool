@@ -22,7 +22,6 @@ public class ToolMain {
     public static void initSiteInfo() {
         PropertyUtil.init();
         SiteInfo.initSiteMap();
-        //TODO LL format site info to map.for easy!!!
     }
 
 }

@@ -16,6 +16,7 @@ public class Constant {
 	public static final String TR_URL_KEY="";
 	public static final String TR_USERNAME="";
 	public static final String TR_PASSWOPRD="";
+	public static final String EXECL_SAVE_PATH="savae_path";
 	
 	
 	public static final String LOG_API_URI ="api/v2/auth/login";

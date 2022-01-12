@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import com.wejias.qb_tool.constant.Constant;
 import com.wejias.qb_tool.constant.TrackerInfo;
+import com.wejias.qb_tool.helper.ExeclHelpler;
 import com.wejias.qb_tool.helper.HtmlUnitHelper;
 import com.wejias.qb_tool.helper.JsonHelper;
 import com.wejias.qb_tool.helper.PropertyUtil;
@@ -56,6 +57,7 @@ public class ParseLogic {
 		}
 		System.out.println("做种数:"+count);
 		List<TorrentVO> torrentVoList = this.dealSiteUpload();
+		this.writeToExecl(torrentVoList);
 		System.out.println(torrentVoList.size());
 	}
 	
@@ -96,18 +98,26 @@ public class ParseLogic {
             if(srcTorrentVO == null) {
                 throw new NullPointerException(entry.getKey()+" srcTorrentVO is null");
             }
-            srcTorrentVO.siteUploadSize = new HashMap<String, Long>();
-            srcTorrentVO.siteUploadSize.put(srcTorrentVO.site, srcTorrentVO.downloadByteSize);
+//            srcTorrentVO.siteUploadSize = new HashMap<String, Long>();
+//            srcTorrentVO.siteUploadSize.put(srcTorrentVO.site, srcTorrentVO.downloadByteSize);
             for (TorrentVO torrentVO : val) {
                 if(torrentVO.site.equals(srcTorrentVO.site)) {
                     continue;
                 }
                 srcTorrentVO.downloadByteSize += torrentVO.downloadByteSize;
+                srcTorrentVO.uploadByteSize += torrentVO.uploadByteSize;
+//                srcTorrentVO.siteUploadSize.put(torrentVO.site, torrentVO.uploadByteSize);
                 srcTorrentVO.activeSecond += torrentVO.activeSecond;
-                srcTorrentVO.siteUploadSize.put(torrentVO.site, torrentVO.downloadByteSize);
             }
+            srcTorrentVO.calStrField();
             needRecordVoList.add(srcTorrentVO);
         }
 	    return needRecordVoList;
+	}
+	
+	public void writeToExecl(List<TorrentVO> torrentList) {
+	    String filePath = PropertyUtil.getPropertyStrValue(Constant.SETTING_PROPERTIES,Constant.EXECL_SAVE_PATH);
+	    filePath +="record.xlsx";
+	    ExeclHelpler.writeExcel(filePath, torrentList);
 	}
 }

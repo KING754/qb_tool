@@ -3,7 +3,8 @@ package com.wejias.qb_tool.vo;
 import java.util.Date;
 import java.util.Map;
 
-import com.wejias.qb_tool.constant.Constant;
+import com.alibaba.excel.annotation.ExcelIgnore;
+import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.wejias.qb_tool.constant.SiteInfo;
 import com.wejias.qb_tool.constant.SpaceUnit;
 import com.wejias.qb_tool.constant.TimeUnit;
@@ -20,11 +21,13 @@ public class TorrentVO {
     public boolean                              isDownAll;                    // 是/否,任何一个site下载完成,就是下载完成了.
     public Date                                 finishDate;
     public String                               downloadHours;              // 下载用时,unit:hour
+    public long                                 existSecond;
     public String                               existHours;                 // 存在天数,unit:hour
     public String                               activeHours;
     public Double                               activePrecent;              // 做种率
     public String                               path;
 
+    
     public Map<String, Long>                   siteUploadSize;
 
     // temp
@@ -34,7 +37,24 @@ public class TorrentVO {
     public String                              site;
     public long                                activeSecond;
     
-    
+    public void calStrField() {
+      this.downloadSizeStr = SpaceUnit.getDoubleSpaceAndUnit(this.downloadByteSize);
+        
+      this.uploadsizeStr = SpaceUnit.getDoubleSpaceAndUnit(this.uploadByteSize);
+      
+      this.uploadPrecent = ((double)uploadByteSize/(double)downloadByteSize);
+      String valueTemp = String.format("%.2f", this.uploadPrecent);
+      this.uploadPrecent = Double.valueOf(valueTemp);
+      
+      
+      this.totalSizeStr = SpaceUnit.getDoubleSpaceAndUnit(totalByteSize);
+      
+      this.activeHours =  TimeUnit.getDoubleTimeAndUnitNoDay(activeSecond);
+      
+      this.activePrecent = ((double)activeSecond/(double)existSecond);
+      valueTemp = String.format("%.2f", this.activePrecent);
+      this.activePrecent = Double.valueOf(valueTemp);
+    }
     
     
     /**
@@ -46,36 +66,21 @@ public class TorrentVO {
         this.cat = torrent.getCategory();
         
         this.downloadByteSize = torrent.getDownloaded();
-//        this.downloadSizeStr = SpaceUnit.getDoubleSpaceAndUnit(this.downloadByteSize);
-        
         this.uploadByteSize = torrent.getUploaded();
-//        this.uploadsizeStr = SpaceUnit.getDoubleSpaceAndUnit(this.uploadByteSize);
-        
-//        this.uploadPrecent = ((double)uploadByteSize/(double)downloadByteSize);
-//        String valueTemp = String.format("%.2f", this.uploadPrecent);
-//        this.uploadPrecent = Double.valueOf(valueTemp);
+        this.totalByteSize = torrent.getTotal_size();
         
         this.addDate = new Date(torrent.getAdded_on() * 1000);
-        
-        this.totalByteSize = torrent.getTotal_size();
-//        this.totalSizeStr = SpaceUnit.getDoubleSpaceAndUnit(totalByteSize);
+        this.finishDate = new Date(torrent.getCompletion_on() * 1000);
         
         this.isDownAll = torrent.getDownloaded() >= torrent.getTotal_size();
-        
-        this.finishDate = new Date(torrent.getCompletion_on() * 1000);
         
         long downloadUseSecond = (this.finishDate.getTime() - this.addDate.getTime())/1000;
         this.downloadHours = TimeUnit.getDoubleTimeAndUnitNoDay(downloadUseSecond);
         
-        long existSecond = (System.currentTimeMillis() - this.finishDate.getTime())/1000;
+        this.existSecond = (System.currentTimeMillis() - this.finishDate.getTime())/1000;
         this.existHours = TimeUnit.getDoubleTimeAndUnitNoDay(existSecond);
         
         this.activeSecond = torrent.getTime_active();
-//        this.activeHours =  TimeUnit.getDoubleTimeAndUnitNoDay(activeSecond);
-        
-//        this.activePrecent = ((double)activeSecond/(double)existSecond);
-//        valueTemp = String.format("%.2f", this.activePrecent);
-//        this.activePrecent = Double.valueOf(valueTemp);
         
         this.path = torrent.getSave_path();
         
@@ -83,14 +88,7 @@ public class TorrentVO {
         if(tracker == null || tracker.equals("")) {
             tracker = TrackerInfo.getTrackerURL(rid);
         }
-//        if(tracker == null || tracker.isEmpty()) {
-//            System.out.println(name);
-//        }
         this.site = SiteInfo.getSiteName(tracker);
-
-//        System.out.println(path);
-//        System.out.println(torrent.getTime_active());
-//        System.out.println(torrent.getSeeding_time());
     }
 
     /**
