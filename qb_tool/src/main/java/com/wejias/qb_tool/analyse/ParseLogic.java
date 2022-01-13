@@ -98,15 +98,15 @@ public class ParseLogic {
             if(srcTorrentVO == null) {
                 throw new NullPointerException(entry.getKey()+" srcTorrentVO is null");
             }
-//            srcTorrentVO.siteUploadSize = new HashMap<String, Long>();
-//            srcTorrentVO.siteUploadSize.put(srcTorrentVO.site, srcTorrentVO.downloadByteSize);
+            srcTorrentVO.siteUploadSize = new HashMap<String, Long>();
+            srcTorrentVO.siteUploadSize.put(srcTorrentVO.site, srcTorrentVO.downloadByteSize);
             for (TorrentVO torrentVO : val) {
                 if(torrentVO.site.equals(srcTorrentVO.site)) {
                     continue;
                 }
                 srcTorrentVO.downloadByteSize += torrentVO.downloadByteSize;
                 srcTorrentVO.uploadByteSize += torrentVO.uploadByteSize;
-//                srcTorrentVO.siteUploadSize.put(torrentVO.site, torrentVO.uploadByteSize);
+                srcTorrentVO.siteUploadSize.put(torrentVO.site, torrentVO.uploadByteSize);
                 srcTorrentVO.activeSecond += torrentVO.activeSecond;
             }
             srcTorrentVO.calStrField();

@@ -4,37 +4,79 @@ import java.util.Date;
 import java.util.Map;
 
 import com.alibaba.excel.annotation.ExcelIgnore;
-import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.wejias.qb_tool.constant.SiteInfo;
 import com.wejias.qb_tool.constant.SpaceUnit;
 import com.wejias.qb_tool.constant.TimeUnit;
 import com.wejias.qb_tool.constant.TrackerInfo;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class TorrentVO {
+    @Getter
+    @Setter
     public String                               name;
+    @Getter
+    @Setter
     public String                               cat;
+    @Getter
+    @Setter
     public String                               downloadSizeStr;            // unit:(G,M,KB)
+    @Getter
+    @Setter
     public String                               uploadsizeStr;              // unit:(G,M,KB)
+    @Getter
+    @Setter
     public Double                               uploadPrecent;              // 上传率
+    @Getter
+    @Setter
     public Date                                 addDate;
+    @Getter
+    @Setter
     public String                               totalSizeStr;               // unit:(G,M,KB)
+    @Getter
+    @Setter
     public boolean                              isDownAll;                    // 是/否,任何一个site下载完成,就是下载完成了.
+    @Getter
+    @Setter
     public Date                                 finishDate;
+    @Getter
+    @Setter
     public String                               downloadHours;              // 下载用时,unit:hour
+    @Getter
+    @Setter
     public long                                 existSecond;
+    @Getter
+    @Setter
     public String                               existHours;                 // 存在天数,unit:hour
+    @Getter
+    @Setter
     public String                               activeHours;
+    @Getter
+    @Setter
     public Double                               activePrecent;              // 做种率
+    @Getter
+    @Setter
     public String                               path;
 
-    
+    @ExcelIgnore
     public Map<String, Long>                   siteUploadSize;
 
     // temp
+    @Getter
+    @Setter
     public long                                totalByteSize;
+    @Getter
+    @Setter
     public long                                downloadByteSize;
+    @Getter
+    @Setter
     public long                                uploadByteSize;
+    @Getter
+    @Setter
     public String                              site;
+    @Getter
+    @Setter
     public long                                activeSecond;
     
     public void calStrField() {
@@ -137,5 +179,6 @@ public class TorrentVO {
      * 表需要的数据
      * name,分类,downloadSize(G,M,KB),updateloadsize(G,M,KB),上传率,开始时间,总大小,是否完成下载,完成时间,下载用户,存在天数,做种时间,做种时间比,savepath,site1上传,site2上传.....
      */
+    
 
 }
