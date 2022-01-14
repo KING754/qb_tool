@@ -4,80 +4,64 @@ import java.util.Date;
 import java.util.Map;
 
 import com.alibaba.excel.annotation.ExcelIgnore;
+import com.alibaba.excel.annotation.ExcelProperty;
 import com.wejias.qb_tool.constant.SiteInfo;
 import com.wejias.qb_tool.constant.SpaceUnit;
 import com.wejias.qb_tool.constant.TimeUnit;
 import com.wejias.qb_tool.constant.TrackerInfo;
+import com.wejias.qb_tool.helper.CustomBooleanConverter;
 
 import lombok.Getter;
 import lombok.Setter;
 
+@Getter
+@Setter
 public class TorrentVO {
-    @Getter
-    @Setter
+    @ExcelProperty(value = "名称")
     public String                               name;
-    @Getter
-    @Setter
+    @ExcelProperty(value = "分类")
     public String                               cat;
-    @Getter
-    @Setter
+    @ExcelProperty(value = "下载")
     public String                               downloadSizeStr;            // unit:(G,M,KB)
-    @Getter
-    @Setter
+    @ExcelProperty(value = "总上传")
     public String                               uploadsizeStr;              // unit:(G,M,KB)
-    @Getter
-    @Setter
+    @ExcelProperty(value = "上传率")
     public Double                               uploadPrecent;              // 上传率
-    @Getter
-    @Setter
+    @ExcelProperty(value = "开始时间")
     public Date                                 addDate;
-    @Getter
-    @Setter
+    @ExcelProperty(value = "总大小")
     public String                               totalSizeStr;               // unit:(G,M,KB)
-    @Getter
-    @Setter
-    public boolean                              isDownAll;                    // 是/否,任何一个site下载完成,就是下载完成了.
-    @Getter
-    @Setter
+    @ExcelProperty(value = "是否下载完成",converter = CustomBooleanConverter.class)
+    public boolean                              downAll;                    // 是/否,任何一个site下载完成,就是下载完成了.
+    @ExcelProperty(value = "完成时间")
     public Date                                 finishDate;
-    @Getter
-    @Setter
+    @ExcelProperty(value = "下载耗时")
     public String                               downloadHours;              // 下载用时,unit:hour
-    @Getter
-    @Setter
-    public long                                 existSecond;
-    @Getter
-    @Setter
+    @ExcelProperty(value = "存活时间")
     public String                               existHours;                 // 存在天数,unit:hour
-    @Getter
-    @Setter
+    @ExcelProperty(value = "活动时间")
     public String                               activeHours;
-    @Getter
-    @Setter
-    public Double                               activePrecent;              // 做种率
-    @Getter
-    @Setter
+    @ExcelProperty(value = "活动率")
+    public Double                               activePrecent;              // 做种时间比率
+    @ExcelProperty(value = "存放路径")
     public String                               path;
 
     @ExcelIgnore
     public Map<String, Long>                   siteUploadSize;
+    @ExcelIgnore
+    public String                              site;
 
     // temp
-    @Getter
-    @Setter
+    @ExcelProperty({"总大小(B)"})
     public long                                totalByteSize;
-    @Getter
-    @Setter
+    @ExcelProperty({"下载大小(B)"})
     public long                                downloadByteSize;
-    @Getter
-    @Setter
+    @ExcelProperty({"上传大小(B)"})
     public long                                uploadByteSize;
-    @Getter
-    @Setter
-    public String                              site;
-    @Getter
-    @Setter
+    @ExcelProperty({"活动时间(秒)"})
     public long                                activeSecond;
+    @ExcelIgnore
+    public long                                existSecond;
     
     public void calStrField() {
       this.downloadSizeStr = SpaceUnit.getDoubleSpaceAndUnit(this.downloadByteSize);
@@ -114,7 +98,7 @@ public class TorrentVO {
         this.addDate = new Date(torrent.getAdded_on() * 1000);
         this.finishDate = new Date(torrent.getCompletion_on() * 1000);
         
-        this.isDownAll = torrent.getDownloaded() >= torrent.getTotal_size();
+        this.downAll = torrent.getDownloaded() >= torrent.getTotal_size();
         
         long downloadUseSecond = (this.finishDate.getTime() - this.addDate.getTime())/1000;
         this.downloadHours = TimeUnit.getDoubleTimeAndUnitNoDay(downloadUseSecond);
@@ -143,34 +127,25 @@ public class TorrentVO {
         return "TorrentVO [ "
                 + "\n  name=" + name 
                 + ",\n  cat=" + cat 
-//                + ",\n  downloadByteSize="+ downloadByteSize
-//                + ",\n  downloadSizeStr="+ downloadSizeStr
-////                 
-////                + ",\n  uploadByteSize=" + uploadByteSize
-//                + ",\n  uploadsizeStr=" + uploadsizeStr
-////                
-//                + ",\n  uploadPrecent=" + uploadPrecent
-//                
-//                + ",\n  addDate=" + addDate
-////                
-//                + ",\n  totalSizeByte=" + totalByteSize
-//                + ",\n  totalSizeStr=" + totalSizeStr
-////                
-//                + ",\n  downAll=" + downAll
-////                
-//                + ",\n  finishDate=" + finishDate
-////                
-//                + ",\n  downloadHours=" + downloadHours
-////                
-//                + ",\n  existHours=" + existHours
-//                
-//                + ",\n  activeSecond=" + activeSecond 
-//                + ",\n  activeHours=" + activeHours
-//                + ",\n  activePrecent=" + activePrecent
-////                
-//                + ",\n  path=" + path
-//                
-//                + ",\n  siteUploadSize=" + siteUploadSize
+                + ",\n  downloadByteSize="+ downloadByteSize
+                + ",\n  downloadSizeStr="+ downloadSizeStr
+                + ",\n  uploadByteSize=" + uploadByteSize
+                + ",\n  uploadsizeStr=" + uploadsizeStr
+                + ",\n  uploadPrecent=" + uploadPrecent
+                
+                + ",\n  addDate=" + addDate
+                + ",\n  totalSizeByte=" + totalByteSize
+                + ",\n  totalSizeStr=" + totalSizeStr
+                + ",\n  downAll=" + downAll
+                + ",\n  finishDate=" + finishDate
+                + ",\n  downloadHours=" + downloadHours
+                + ",\n  existHours=" + existHours
+                + ",\n  activeSecond=" + activeSecond 
+                + ",\n  activeHours=" + activeHours
+                + ",\n  activePrecent=" + activePrecent
+                + ",\n  path=" + path
+                
+                + ",\n  siteUploadSize=" + siteUploadSize
                 + ",\n  site=" + site 
                 + " \n]";
     }

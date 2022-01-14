@@ -58,7 +58,7 @@ public class ParseLogic {
 		System.out.println("做种数:"+count);
 		List<TorrentVO> torrentVoList = this.dealSiteUpload();
 		this.writeToExecl(torrentVoList);
-		System.out.println(torrentVoList.size());
+		System.out.println("完成导出!!!");
 	}
 	
 	private void dealTorrent(String torrentId,TorrentDto torrent) {
@@ -84,7 +84,7 @@ public class ParseLogic {
             TorrentVO srcTorrentVO = null;
             TorrentVO maxDownload = null;
             for (TorrentVO torrentVO : val) {
-                if(torrentVO.downloadByteSize > 0 && torrentVO.isDownAll) {
+                if(torrentVO.downloadByteSize > 0 && torrentVO.downAll) {
                     srcTorrentVO = torrentVO;
                     break;
                 }
@@ -101,6 +101,9 @@ public class ParseLogic {
             srcTorrentVO.siteUploadSize = new HashMap<String, Long>();
             srcTorrentVO.siteUploadSize.put(srcTorrentVO.site, srcTorrentVO.downloadByteSize);
             for (TorrentVO torrentVO : val) {
+                if(!srcTorrentVO.downAll && torrentVO.downAll) {
+                    srcTorrentVO.downAll = true;
+                }
                 if(torrentVO.site.equals(srcTorrentVO.site)) {
                     continue;
                 }
