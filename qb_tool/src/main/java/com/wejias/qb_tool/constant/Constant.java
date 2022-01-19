@@ -3,10 +3,10 @@ package com.wejias.qb_tool.constant;
 import java.util.Properties;
 
 public class Constant {
-    public static final String SETTING_PROPERTY_PATH = "config.properties";
+    public static final String SETTING_PROPERTY_PATH = "conf/config.properties";
     public static Properties SETTING_PROPERTIES = new Properties();
     
-    public static final String SITE_PROPERTY_PATH = "site.properties";
+    public static final String SITE_PROPERTY_PATH = "conf/site.properties";
     public static Properties SITE_PROPERTIES = new Properties();
 
     
