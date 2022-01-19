@@ -9,7 +9,7 @@
 ## 工具原因
 本工具没有与PT站没有任何关系。只是抓取了qb的WEB API上的数据进行处理，然后输出execl.
 
-## 使用方法
+## 使用方法  
 0.需开启qb的web UI功能。  
 1.qb_tool/qb_tool/目录为程序运行目录  
 2.在qb_tool\qb_tool\bin\conf\conf\config.properties文件中配置好web UI的地址与用户名及文件存放地址.  
